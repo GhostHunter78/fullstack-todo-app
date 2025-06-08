@@ -3,7 +3,7 @@
 import FormLabel from "./components/FormLabel";
 import Header from "./components/Header";
 import Dropdown from "./components/Dropdown";
-import { useDropdown } from "../customHooks/useDropdown";
+import { useDropdown } from "../hooks/useDropdown";
 import {
   priorityOptionsArray,
   categoryOptionsArray,
@@ -15,6 +15,9 @@ import { Todo } from "./types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TodoCards from "./components/TodoCards";
+import FilterSection from "./components/FilterSection";
+import { useSearchParams } from "next/navigation";
+import SortSection from "./components/SortSection";
 
 export default function Home() {
   const priority = useDropdown();
@@ -24,11 +27,18 @@ export default function Home() {
   const [dueDate, setDueDate] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const todosData = await getTodos();
+        const filters = {
+          priority: searchParams.get("priority") || undefined,
+          category: searchParams.get("category") || undefined,
+          status: searchParams.get("status") || undefined,
+        };
+        const sortBy = searchParams.get("sortBy") || undefined;
+        const todosData = await getTodos(filters, sortBy);
         console.log("Todos on component mount:", todosData);
         setTodos(todosData);
       } catch (error) {
@@ -36,7 +46,7 @@ export default function Home() {
       }
     };
     fetchTodos();
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,6 +189,12 @@ export default function Home() {
             </button>
           </form>
         </div>
+      </section>
+      <section className="w-full px-4 mt-8 mb-10">
+        <FilterSection />
+      </section>
+      <section className="w-full px-4 mt-8 mb-10">
+        <SortSection />
       </section>
       <section className="w-full px-4 mt-8 mb-10 flex flex-col gap-y-6">
         {todos.map((todo) => (

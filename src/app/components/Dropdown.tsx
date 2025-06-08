@@ -44,11 +44,8 @@ const Dropdown: React.FC<DropdownProps> = ({
         {options.map((option, index) => (
           <div
             key={option.value}
-            className={`w-full p-3 cursor-pointer transition-colors ${
-              option.color
-                ? `hover:bg-${option.color}-400 hover:text-white`
-                : "hover:bg-gray-100"
-            } ${index === 0 ? "rounded-t-lg" : ""} ${
+            className={`w-full p-3 cursor-pointer transition-colors hover:bg-gray-100
+              ${index === 0 ? "rounded-t-lg" : ""} ${
               index === options.length - 1
                 ? "rounded-b-lg"
                 : "border-b border-gray-200"
@@ -57,7 +54,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           >
             <p
               className={`text-sm font-medium ${
-                option.color ? `text-${option.color}-500` : "text-gray-700"
+                option.color ? `text-[${option.color}]` : "text-gray-700"
               }`}
             >
               {option.label}
