@@ -7,10 +7,12 @@ import { Todo } from "../types";
 function CardActionsMenu({
   handleComplete,
   handleDeleteClick,
+  handleEditClick,
   todo,
 }: {
   handleComplete: () => void;
   handleDeleteClick: () => void;
+  handleEditClick: () => void;
   todo: Todo;
 }) {
   return (
@@ -31,8 +33,11 @@ function CardActionsMenu({
           <p className="text-[15px]">Complete</p>
         )}
       </div>
-      <div className="flex items-center gap-x-2 py-[10px] border-b border-gray-200">
-        <FaEdit size={20} />
+      <div
+        onClick={handleEditClick}
+        className="flex items-center gap-x-2 py-[10px] border-b border-gray-200 cursor-pointer"
+      >
+        <FaEdit size={20} className="cursor-pointer" />
         <p className="text-[15px]">Edit</p>
       </div>
       <div

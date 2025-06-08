@@ -2,7 +2,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-export async function createTodo(formData: FormData) {
+export async function editTodo(formData: FormData, id: string) {
   const supabaseUrl = process.env.SUPABASE_URL!;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -18,13 +18,16 @@ export async function createTodo(formData: FormData) {
   const category = formData.get("category")!;
   const dueDate = formData.get("dueDate")!;
 
-  const { error } = await supabase.from("todos").insert({
-    title,
-    description,
-    priority,
-    category,
-    due_date: dueDate || null,
-  });
+  const { error } = await supabase
+    .from("todos")
+    .update({
+      title,
+      description,
+      priority,
+      category,
+      due_date: dueDate || null,
+    })
+    .eq("id", id);
 
   if (error) {
     throw new Error(error.message);

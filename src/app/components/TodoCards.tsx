@@ -1,10 +1,6 @@
 import { HiDotsVertical } from "react-icons/hi";
 import { MdOutlineDateRange } from "react-icons/md";
-import { MdCheckCircle } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { MdLabelImportantOutline } from "react-icons/md";
-import { FaUndoAlt } from "react-icons/fa";
 import { Todo } from "../types";
 import { useRef, useEffect, useState } from "react";
 import { editStatus } from "../actions/editStatus";
@@ -13,6 +9,8 @@ import { deleteTodo } from "../actions/deleteTodo";
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 import CardActionsMenu from "./CardActionsMenu";
+import EditModal from "./EditModal";
+import { editTodo } from "../actions/editTodo";
 
 function TodoCards({
   todo,
@@ -23,6 +21,7 @@ function TodoCards({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null!);
 
@@ -65,6 +64,24 @@ function TodoCards({
     setShowDeleteModal(false);
   };
 
+  const handleEditClick = () => {
+    setIsMenuOpen(false);
+    setShowEditModal(true);
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditModal(false);
+  };
+
+  const handleConfirmEdit = async (formData: FormData) => {
+    formData.append("id", todo.id);
+    await editTodo(formData, todo.id);
+    const updatedTodos = await getTodos();
+    setTodos(updatedTodos);
+    console.log("Updated todos:", updatedTodos);
+    setShowEditModal(false);
+  };
+
   return (
     <>
       <div
@@ -75,7 +92,7 @@ function TodoCards({
             ? "#ff000091"
             : todo.priority === "Medium"
             ? "#ffff0085"
-            : "#ff000091",
+            : "#0000ff63",
         }}
         key={todo.id}
         className="w-full pt-3 pb-6 px-4 flex flex-col items-start rounded-lg text-sm"
@@ -93,7 +110,9 @@ function TodoCards({
           </div>
           {todo.due_date && (
             <div className="flex items-center gap-x-3">
-              <MdLabelImportantOutline size={20} className="mb-4 text-white" />
+              <div className="mb-4 text-white">
+                <MdLabelImportantOutline size={20} />
+              </div>
               <div className="flex items-center gap-x-2 rounded-lg bg-[#f1f5fe] px-3 py-1 mb-4">
                 <MdOutlineDateRange />
                 <p>
@@ -112,16 +131,18 @@ function TodoCards({
           <p className="text-sm mb-6 text-black">{todo.description}</p>
         )}
         <div ref={ref} className="w-full relative flex justify-end items-end">
-          <HiDotsVertical
-            size={20}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          <div
             className="cursor-pointer"
-          />
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <HiDotsVertical size={20} />
+          </div>
           {isMenuOpen && (
             <CardActionsMenu
               todo={todo}
               handleComplete={handleComplete}
               handleDeleteClick={handleDeleteClick}
+              handleEditClick={handleEditClick}
             />
           )}
         </div>
@@ -132,6 +153,16 @@ function TodoCards({
           <DeleteModal
             handleCancelDelete={handleCancelDelete}
             handleConfirmDelete={handleConfirmDelete}
+          />
+        </Modal>
+      )}
+
+      {showEditModal && (
+        <Modal>
+          <EditModal
+            handleCancelEdit={handleCancelEdit}
+            handleConfirmEdit={handleConfirmEdit}
+            todo={todo}
           />
         </Modal>
       )}
