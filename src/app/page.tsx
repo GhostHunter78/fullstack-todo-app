@@ -1,103 +1,190 @@
-import Image from "next/image";
+"use client";
+
+import FormLabel from "./components/FormLabel";
+import Header from "./components/Header";
+import Dropdown from "./components/Dropdown";
+import { useDropdown } from "../customHooks/useDropdown";
+import {
+  priorityOptionsArray,
+  categoryOptionsArray,
+} from "./components/DropdownArrays";
+import { useEffect, useRef, useState } from "react";
+import { createTodo } from "./actions/createTodo";
+import { getTodos } from "./actions/getTodos";
+import { Todo } from "./types";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import TodoCards from "./components/TodoCards";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const priority = useDropdown();
+  const category = useDropdown();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const todosData = await getTodos();
+        console.log("Todos on component mount:", todosData);
+        setTodos(todosData);
+      } catch (error) {
+        console.error("Error fetching todos:", error);
+      }
+    };
+    fetchTodos();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(formRef.current!);
+
+    if (priority.selected) {
+      formData.set("priority", priority.selected);
+    }
+    if (category.selected) {
+      formData.set("category", category.selected);
+    }
+
+    try {
+      await createTodo(formData);
+      toast.success("Todo created successfully! 🎉", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      const updatedTodos = await getTodos();
+      setTodos(updatedTodos);
+      console.log("Updated todos:", updatedTodos);
+
+      formRef.current?.reset();
+      setTitle("");
+      setDescription("");
+      setDueDate("");
+      priority.setSelected("");
+      category.setSelected("");
+    } catch (error) {
+      console.error(error);
+
+      toast.error("Something went wrong! Please try again. 😞", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
+  return (
+    <div className="bg-[#f6f6f7] pb-[100px]">
+      <Header />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
+      <section className="w-full px-4 mt-8">
+        <div className="w-full py-5 px-4 flex flex-col items-center rounded-lg bg-[#f5deb3b2]">
+          <h1 className="text-2xl font-bold text-purple-500 mb-5">
+            Create your ToDo 😊
+          </h1>
+
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="w-full flex flex-col gap-y-4"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <FormLabel label="Title*">
+              <input
+                id="titleInput"
+                name="title"
+                type="text"
+                placeholder="Enter task title"
+                required
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </FormLabel>
+
+            <FormLabel label="Description (optional)">
+              <textarea
+                id="descriptionInput"
+                name="description"
+                placeholder="Enter task description"
+                maxLength={150}
+                className="w-full max-h-[150px] min-h-[80px] px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm resize-none"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </FormLabel>
+
+            <FormLabel label="Priority Level*">
+              <Dropdown
+                placeholder="Select priority level"
+                options={priorityOptionsArray}
+                value={priority.selected}
+                onChange={priority.setSelected}
+                isOpen={priority.isOpen}
+                setIsOpen={priority.setIsOpen}
+                dropdownRef={priority.ref}
+              />
+            </FormLabel>
+
+            <FormLabel label="Category*">
+              <Dropdown
+                placeholder="Select category"
+                options={categoryOptionsArray}
+                value={category.selected}
+                onChange={category.setSelected}
+                isOpen={category.isOpen}
+                setIsOpen={category.setIsOpen}
+                dropdownRef={category.ref}
+              />
+            </FormLabel>
+
+            <FormLabel label="Due Date (optional)">
+              <input
+                id="dueDateInput"
+                name="dueDate"
+                type="date"
+                className="w-[200px] p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-sm"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+            </FormLabel>
+
+            <button
+              type="submit"
+              className="w-full py-3 mt-5 rounded-lg bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white text-sm font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Create ToDo
+            </button>
+          </form>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+      <section className="w-full px-4 mt-8 mb-10 flex flex-col gap-y-6">
+        {todos.map((todo) => (
+          <TodoCards key={todo.id} todo={todo} setTodos={setTodos} />
+        ))}
+      </section>
     </div>
   );
 }
