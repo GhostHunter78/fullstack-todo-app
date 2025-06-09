@@ -37,7 +37,7 @@ function CardActionsMenu({
         onClick={handleEditClick}
         className="flex items-center gap-x-2 py-[10px] border-b border-gray-200 cursor-pointer"
       >
-        <FaEdit size={20} className="cursor-pointer" />
+        <FaEdit size={20} />
         <p className="text-[15px]">Edit</p>
       </div>
       <div

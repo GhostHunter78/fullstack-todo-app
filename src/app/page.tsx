@@ -96,7 +96,7 @@ export default function Home() {
   const toggleForm = () => setShowForm(!showForm);
 
   return (
-    <div className="bg-gradient-to-b from-indigo-50 to-white min-h-screen pb-20">
+    <div className="bg-gradient-to-b from-indigo-50 to-white min-h-screen pb-[150px]">
       <Header />
       <ToastContainer
         position="top-right"
@@ -115,7 +115,7 @@ export default function Home() {
         <div className="mb-6">
           <button
             onClick={toggleForm}
-            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-200 font-medium"
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-200 font-medium cursor-pointer"
           >
             <FaPlus /> {showForm ? "Hide Form" : "Create New Todo"}
           </button>
@@ -198,13 +198,13 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={toggleForm}
-                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors shadow-sm"
+                  className="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors shadow-sm cursor-pointer"
                 >
                   Create Todo
                 </button>

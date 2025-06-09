@@ -27,11 +27,12 @@ const Dropdown: React.FC<DropdownProps> = ({
         <p className={`text-sm ${value ? "text-black" : "text-gray-500"}`}>
           {value || placeholder}
         </p>
-        <IoIosArrowDown
-          className={`text-xl text-gray-500 transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+        <div className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+          <IoIosArrowDown
+            size={24}
+            color="#6B7280"
+          />
+        </div>
       </div>
 
       <div

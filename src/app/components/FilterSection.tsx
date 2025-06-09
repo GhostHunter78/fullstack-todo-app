@@ -34,7 +34,7 @@ function FilterSection() {
       >
         <div className="flex items-center gap-x-2">
           <div className="w-9 h-9 rounded-full bg-indigo-100 flex items-center justify-center">
-            <FaFilter size={16} className="text-indigo-600" />
+            <FaFilter size={16} color="#4F46E5" />
           </div>
           <h3 className="font-medium text-gray-800">Filters</h3>
         </div>
@@ -47,7 +47,7 @@ function FilterSection() {
                 e.stopPropagation();
                 handleClearFilters();
               }}
-              className="text-sm text-gray-500 hover:text-red-500 transition-colors"
+              className="text-sm text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
             >
               Clear all
             </button>
@@ -69,7 +69,7 @@ function FilterSection() {
                 <button
                   key={option.value}
                   onClick={() => handleFilterChange("priority", option.value)}
-                  className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-x-2 transition-colors ${
+                  className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-x-2 transition-colors cursor-pointer ${
                     currentPriority.toLowerCase() === option.value.toLowerCase()
                       ? "bg-indigo-100 text-indigo-700 font-medium"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -84,7 +84,7 @@ function FilterSection() {
               ))}
               <button
                 onClick={() => handleFilterChange("priority", "all")}
-                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                   currentPriority === "all"
                     ? "bg-indigo-100 text-indigo-700 font-medium"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -102,7 +102,7 @@ function FilterSection() {
                 <button
                   key={option.value}
                   onClick={() => handleFilterChange("category", option.value)}
-                  className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                  className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                     currentCategory.toLowerCase() === option.value.toLowerCase()
                       ? "bg-indigo-100 text-indigo-700 font-medium"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -113,7 +113,7 @@ function FilterSection() {
               ))}
               <button
                 onClick={() => handleFilterChange("category", "all")}
-                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                   currentCategory === "all"
                     ? "bg-indigo-100 text-indigo-700 font-medium"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -129,7 +129,7 @@ function FilterSection() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => handleFilterChange("status", "active")}
-                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                   currentStatus === "active"
                     ? "bg-indigo-100 text-indigo-700 font-medium"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -139,7 +139,7 @@ function FilterSection() {
               </button>
               <button
                 onClick={() => handleFilterChange("status", "completed")}
-                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                   currentStatus === "completed"
                     ? "bg-indigo-100 text-indigo-700 font-medium"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -149,7 +149,7 @@ function FilterSection() {
               </button>
               <button
                 onClick={() => handleFilterChange("status", "all")}
-                className={`px-3 py-1.5 rounded-full text-sm transition-colors ${
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors cursor-pointer ${
                   currentStatus === "all"
                     ? "bg-indigo-100 text-indigo-700 font-medium"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
