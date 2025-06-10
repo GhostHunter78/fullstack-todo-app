@@ -9,5 +9,7 @@ export default async function Home() {
     redirect("/login");
   }
 
-  return <TodoAppHomePage />;
+  const userEmail = data?.user?.email;
+
+  return <TodoAppHomePage userEmail={userEmail || ""} />;
 }

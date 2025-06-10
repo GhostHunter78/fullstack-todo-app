@@ -8,7 +8,11 @@ interface FilterParams {
   status?: string;
 }
 
-export async function getTodos(filters?: FilterParams, sortBy?: string) {
+export async function getTodos(
+  filters?: FilterParams,
+  sortBy?: string,
+  search?: string
+) {
   const supabase = await createClient();
 
   let query = supabase.from("todos").select("*");
@@ -23,6 +27,10 @@ export async function getTodos(filters?: FilterParams, sortBy?: string) {
     if (filters.status && filters.status !== "all") {
       query = query.eq("completed", filters.status === "completed");
     }
+  }
+
+  if (search) {
+    query = query.ilike("title", `%${search}%`);
   }
 
   const { data, error } = await query.order("created_at", {

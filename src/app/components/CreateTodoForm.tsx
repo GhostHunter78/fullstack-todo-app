@@ -28,7 +28,7 @@ function CreateTodoForm({
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} className="p-6 space-y-5">
+    <form ref={formRef} onSubmit={onSubmit} className="pt-6 px-6 pb-[50px] space-y-5">
       <FormLabel label="Title*">
         <input
           id="titleInput"

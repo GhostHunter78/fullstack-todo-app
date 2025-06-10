@@ -15,8 +15,9 @@ import { useSearchParams } from "next/navigation";
 import SortSection from "./SortSection";
 import { FaPlus } from "react-icons/fa";
 import CreateTodoForm from "./CreateTodoForm";
+import SearchSection from "./SearchSection";
 
-export default function TodoAppHomePage() {
+export default function TodoAppHomePage({ userEmail }: { userEmail: string }) {
   const priority = useDropdown();
   const category = useDropdown();
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -32,7 +33,8 @@ export default function TodoAppHomePage() {
           status: searchParams.get("status") || undefined,
         };
         const sortBy = searchParams.get("sortBy") || undefined;
-        const todosData = await getTodos(filters, sortBy);
+        const search = searchParams.get("search") || undefined;
+        const todosData = await getTodos(filters, sortBy, search);
         setTodos(todosData);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -60,7 +62,8 @@ export default function TodoAppHomePage() {
         status: searchParams.get("status") || undefined,
       };
       const sortBy = searchParams.get("sortBy") || undefined;
-      const updatedTodos = await getTodos(filters, sortBy);
+      const search = searchParams.get("search") || undefined;
+      const updatedTodos = await getTodos(filters, sortBy, search);
       setTodos(updatedTodos);
 
       setShowForm(false);
@@ -74,7 +77,7 @@ export default function TodoAppHomePage() {
 
   return (
     <div className="bg-gradient-to-b from-indigo-50 to-white min-h-screen pb-[150px]">
-      <Header />
+      <Header userEmail={userEmail} />
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -110,6 +113,10 @@ export default function TodoAppHomePage() {
             />
           </div>
         )}
+
+        <section className="mb-8 max-w-[500px]">
+          <SearchSection />
+        </section>
 
         <section className="mb-8">
           <FilterSection />

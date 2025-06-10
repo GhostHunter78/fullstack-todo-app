@@ -97,7 +97,7 @@ function TodoCards({
         key={todo.id}
         className="w-full pt-3 pb-6 px-4 flex flex-col items-start rounded-lg text-sm"
       >
-        <div className="w-full flex items-center gap-x-3">
+        <div className="w-full flex items-center justify-between">
           <div className="flex items-center gap-x-2 rounded-lg bg-[#f1f5fe] px-3 py-1 mb-4">
             <MdOutlineDateRange />
             <p>
@@ -109,7 +109,7 @@ function TodoCards({
             </p>
           </div>
           {todo.due_date && (
-            <div className="flex items-center gap-x-3">
+            <>
               <div className="mb-4 text-white">
                 <MdLabelImportantOutline size={20} />
               </div>
@@ -123,7 +123,7 @@ function TodoCards({
                   })}
                 </p>
               </div>
-            </div>
+            </>
           )}
         </div>
         <h2 className="text-[16px] mb-4">-{todo.title}-</h2>

@@ -1,18 +1,16 @@
 import { RxHamburgerMenu } from "react-icons/rx";
-import { IoSearch } from "react-icons/io5";
 import { signOut } from "../auth/actions";
 
-function Header() {
+function Header({ userEmail }: { userEmail: string }) {
   return (
     <div className="w-full border-b-[#c7cad0]  border-b-2">
       <div className="max-w-[2000px] mx-auto">
-        <div className="w-full flex items-center justify-between p-4  ">
-          <div className="text-2xl">
-            <RxHamburgerMenu />
-          </div>
+        <div className="w-full flex items-center justify-end p-4">
           <div className="flex items-center gap-4">
             <div className="text-xl">
-              <IoSearch />
+              <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                {userEmail?.[0].toUpperCase()}
+              </div>
             </div>
             <div className="text-xl">|</div>
             <button
