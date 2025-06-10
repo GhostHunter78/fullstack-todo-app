@@ -128,7 +128,9 @@ function TodoCards({
         </div>
         <h2 className="text-[16px] mb-4">-{todo.title}-</h2>
         {todo.description && (
-          <p className="text-sm mb-6 text-black">{todo.description}</p>
+          <p className="text-sm mb-6 text-black break-words whitespace-pre-wrap max-w-full overflow-hidden">
+            {todo.description}
+          </p>
         )}
         <div ref={ref} className="w-full relative flex justify-end items-end">
           <div
