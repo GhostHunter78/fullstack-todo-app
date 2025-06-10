@@ -3,15 +3,10 @@
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { useState } from "react";
 import Link from "next/link";
+import { signup } from "../auth/actions";
 
 function page() {
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000); // Simulated loading
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
@@ -23,7 +18,7 @@ function page() {
           <p className="text-gray-600">Please create your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form className="mt-8 space-y-6">
           <div className="space-y-5">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -60,7 +55,7 @@ function page() {
               <input
                 id="repeat-password"
                 name="repeat-password"
-                type="repeat-password"
+                type="password"
                 required
                 className="appearance-none rounded-xl pl-10 relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
                 placeholder="Repeat password"
@@ -69,7 +64,7 @@ function page() {
           </div>
 
           <button
-            type="submit"
+            formAction={signup}
             disabled={isLoading}
             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >

@@ -5,17 +5,13 @@ import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import Link from "next/link";
 import { User } from "@supabase/supabase-js";
+import { emailLogin } from "../auth/actions";
+import { useSearchParams } from "next/navigation";
 
 function page() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
-    // setIsLoading(true);
-    // // Add your login logic here
-    // setTimeout(() => setIsLoading(false), 1000); // Simulated loading
-  };
+  const searchParams = useSearchParams();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
@@ -27,7 +23,7 @@ function page() {
           <p className="text-gray-600">Please sign in to your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form className="mt-8 space-y-6">
           <div className="space-y-5">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -56,10 +52,14 @@ function page() {
                 placeholder="Password"
               />
             </div>
+
+            {searchParams.get("message") && (
+              <p className="text-red-500">{searchParams.get("message")}</p>
+            )}
           </div>
 
           <button
-            type="submit"
+            formAction={emailLogin}
             disabled={isLoading}
             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >

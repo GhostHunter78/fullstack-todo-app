@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "../../../services/supabase";
+import { createClient } from "../../../services/supabase/server";
 
 interface FilterParams {
   priority?: string;
@@ -9,6 +9,8 @@ interface FilterParams {
 }
 
 export async function getTodos(filters?: FilterParams, sortBy?: string) {
+  const supabase = await createClient();
+
   let query = supabase.from("todos").select("*");
 
   if (filters) {
