@@ -15,14 +15,10 @@ import { useSearchParams } from "next/navigation";
 import SortSection from "./SortSection";
 import { FaPlus } from "react-icons/fa";
 import CreateTodoForm from "./CreateTodoForm";
-import { User } from "@supabase/supabase-js";
 
-export default function TodoAppHomePage({ user }: { user: User }) {
+export default function TodoAppHomePage() {
   const priority = useDropdown();
   const category = useDropdown();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [showForm, setShowForm] = useState(false);
   const searchParams = useSearchParams();
@@ -67,9 +63,6 @@ export default function TodoAppHomePage({ user }: { user: User }) {
       const updatedTodos = await getTodos(filters, sortBy);
       setTodos(updatedTodos);
 
-      setTitle("");
-      setDescription("");
-      setDueDate("");
       priority.setSelected("");
       category.setSelected("");
       setShowForm(false);

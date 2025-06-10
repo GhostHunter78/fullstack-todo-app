@@ -2,15 +2,12 @@
 
 import { FaEnvelope, FaLock, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { useState } from "react";
 import Link from "next/link";
-import { User } from "@supabase/supabase-js";
 import { emailLogin } from "../auth/actions";
 import { useSearchParams } from "next/navigation";
 
-function page() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+function LoginPage() {
+  let isLoading = false;
   const searchParams = useSearchParams();
 
   return (
@@ -115,4 +112,4 @@ function page() {
   );
 }
 
-export default page;
+export default LoginPage;
