@@ -16,19 +16,16 @@ export async function createTodo(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (user) {
-    const { data, error } = await supabase
-      .from("todos")
-      .insert([
-        {
-          title,
-          description,
-          priority,
-          category,
-          due_date: dueDate || null,
-          user_id: user.id,
-        },
-      ])
-      .select();
+    const { data, error } = await supabase.from("todos").insert([
+      {
+        title,
+        description,
+        priority,
+        category,
+        due_date: dueDate || null,
+        user_id: user.id,
+      },
+    ]);
 
     if (error) {
       console.error("Error adding todo:", error);

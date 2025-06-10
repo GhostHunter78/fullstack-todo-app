@@ -22,7 +22,8 @@ export interface DropdownProps {
   onChange: (value: string) => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  dropdownRef: React.RefObject<HTMLDivElement>;
+  dropdownRef: React.RefObject<HTMLDivElement>;   
+  name: string; 
 }
 
 export interface UseDropdownReturn {

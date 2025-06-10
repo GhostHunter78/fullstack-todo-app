@@ -63,8 +63,6 @@ export default function TodoAppHomePage() {
       const updatedTodos = await getTodos(filters, sortBy);
       setTodos(updatedTodos);
 
-      priority.setSelected("");
-      category.setSelected("");
       setShowForm(false);
     } catch (error) {
       console.error(error);

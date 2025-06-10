@@ -57,6 +57,7 @@ function CreateTodoForm({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <FormLabel label="Priority Level*">
           <Dropdown
+            name="priority"
             placeholder="Select priority level"
             options={priorityOptionsArray}
             value={priority.selected}
@@ -69,6 +70,7 @@ function CreateTodoForm({
 
         <FormLabel label="Category*">
           <Dropdown
+            name="category"
             placeholder="Select category"
             options={categoryOptionsArray}
             value={category.selected}

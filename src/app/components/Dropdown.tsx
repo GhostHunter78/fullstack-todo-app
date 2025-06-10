@@ -11,6 +11,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   isOpen,
   setIsOpen,
   dropdownRef,
+  name,
 }) => {
   const handleOptionClick = (optionValue: string) => {
     onChange(optionValue);
@@ -19,6 +20,7 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div className="relative">
+      <input type="hidden" name={name} value={value || ""} />
       <div
         ref={dropdownRef}
         className="w-[200px] p-3 bg-white flex items-center justify-between rounded-lg cursor-pointer border border-gray-300 hover:border-gray-400 transition-colors"
@@ -27,14 +29,14 @@ const Dropdown: React.FC<DropdownProps> = ({
         <p className={`text-sm ${value ? "text-black" : "text-gray-500"}`}>
           {value || placeholder}
         </p>
-        <div className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
-          <IoIosArrowDown
-            size={24}
-            color="#6B7280"
-          />
+        <div
+          className={`transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        >
+          <IoIosArrowDown size={24} color="#6B7280" />
         </div>
       </div>
-
       <div
         className={`absolute top-full left-0 z-10 w-[200px] bg-white border border-gray-300 rounded-lg mt-1 shadow-lg transition-all duration-300 ease-in-out ${
           isOpen
