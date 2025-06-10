@@ -1,4 +1,3 @@
-import { RxHamburgerMenu } from "react-icons/rx";
 import { signOut } from "../auth/actions";
 
 function Header({ userEmail }: { userEmail: string }) {
