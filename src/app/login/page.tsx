@@ -4,12 +4,8 @@ import { FaEnvelope, FaLock, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import { emailLogin } from "../auth/actions";
-import { useSearchParams } from "next/navigation";
 
 function LoginPage() {
-  let isLoading = false;
-  const searchParams = useSearchParams();
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-2xl shadow-xl ">
@@ -49,22 +45,13 @@ function LoginPage() {
                 placeholder="Password"
               />
             </div>
-
-            {searchParams.get("message") && (
-              <p className="text-red-500">{searchParams.get("message")}</p>
-            )}
           </div>
 
           <button
             formAction={emailLogin}
-            disabled={isLoading}
             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              "Sign in"
-            )}
+            Sign in
           </button>
 
           <p className="text-center text-sm text-gray-600">

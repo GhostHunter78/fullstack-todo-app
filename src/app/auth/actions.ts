@@ -16,7 +16,7 @@ export async function emailLogin(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/login?message=Invalid login credentials");
+    redirect("/login");
   }
 
   revalidatePath("/", "layout");
@@ -35,7 +35,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/register?message=Invalid signup credentials");
+    redirect("/register");
   }
 
   revalidatePath("/", "layout");

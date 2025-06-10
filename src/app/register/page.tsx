@@ -1,13 +1,10 @@
 "use client";
 
 import { FaEnvelope, FaLock } from "react-icons/fa";
-import { useState } from "react";
 import Link from "next/link";
 import { signup } from "../auth/actions";
 
 function RegisterPage() {
-  let isLoading = false;
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 p-4">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-2xl shadow-xl">
@@ -65,14 +62,9 @@ function RegisterPage() {
 
           <button
             formAction={signup}
-            disabled={isLoading}
             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 ease-in-out transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              "Sign Up"
-            )}
+            Sign Up
           </button>
 
           <p className="text-center text-sm text-gray-600">
