@@ -28,7 +28,11 @@ function CreateTodoForm({
   };
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} className="pt-6 px-6 pb-[50px] space-y-5">
+    <form
+      ref={formRef}
+      onSubmit={onSubmit}
+      className="pt-6 px-6 pb-[50px] space-y-5"
+    >
       <FormLabel label="Title*">
         <input
           id="titleInput"
@@ -60,7 +64,7 @@ function CreateTodoForm({
             name="priority"
             placeholder="Select priority level"
             options={priorityOptionsArray}
-            value={priority.selected}
+            value={priority.selected || "Low"}
             onChange={priority.setSelected}
             isOpen={priority.isOpen}
             setIsOpen={priority.setIsOpen}
@@ -73,7 +77,7 @@ function CreateTodoForm({
             name="category"
             placeholder="Select category"
             options={categoryOptionsArray}
-            value={category.selected}
+            value={category.selected || "Personal"}
             onChange={category.setSelected}
             isOpen={category.isOpen}
             setIsOpen={category.setIsOpen}
@@ -87,7 +91,7 @@ function CreateTodoForm({
           id="dueDateInput"
           name="dueDate"
           type="date"
-          className="w-full md:w-[200px] p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-sm"
+          className="w-full max-w-[200px] p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-sm"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />

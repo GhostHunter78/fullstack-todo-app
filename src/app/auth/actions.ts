@@ -2,21 +2,28 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
 import { createClient } from "../../../services/supabase/server";
+import { validateLogin, validateSignup } from "./schemas";
 
 export async function emailLogin(formData: FormData) {
-  const data = {
+  const rawData = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
 
-  const supabase = await createClient();
+  const validation = validateLogin(rawData);
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  if (!validation.success) {
+    console.error("Login validation failed:", validation.errors);
+    redirect("/login?error=validation");
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword(validation.data);
 
   if (error) {
-    redirect("/login");
+    console.error("Supabase login error:", error.message);
+    redirect("/login?error=auth");
   }
 
   revalidatePath("/", "layout");
@@ -24,18 +31,27 @@ export async function emailLogin(formData: FormData) {
 }
 
 export async function signup(formData: FormData) {
-  const data = {
+  const rawData = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
     repeatPassword: formData.get("repeatPassword") as string,
   };
 
+  const validation = validateSignup(rawData);
+
+  if (!validation.success) {
+    console.error("Signup validation failed:", validation.errors);
+    redirect("/register?error=validation");
+  }
+
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signUp(data);
+  const { email, password } = validation.data;
+  const { error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
-    redirect("/register");
+    console.error("Supabase signup error:", error.message);
+    redirect("/register?error=auth");
   }
 
   revalidatePath("/", "layout");
